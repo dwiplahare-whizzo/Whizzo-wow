@@ -1,0 +1,89 @@
+/* This file: closing-CTA treatments — the CTA band (with its
+   optional full-bleed photo) and the full-bleed video text section. */
+
+/* ---------- CTA band ---------- */
+.wz-ctaband { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; position: relative; z-index: 1; }
+.wz-ctaband h2 { font-size: var(--step-3); max-width: 20ch; }
+
+/* Fixed-background variant: the photo stays pinned to the viewport
+   (background-attachment: fixed) while the section's own transparent
+   content scrolls over it — the "stuck" parallax look. iOS Safari ignores
+   fixed backgrounds and just scrolls normally with it, which is a fine,
+   harmless fallback (the image and text still render correctly). */
+.wz-ctaband-section--media {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  isolation: isolate;
+}
+.wz-ctaband-section--media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ink) 55%, transparent) 0%,
+    color-mix(in oklab, var(--ink) 72%, transparent) 100%
+  );
+  z-index: 0;
+}
+.wz-ctaband-section--media .wz-ctaband h2 { color: #fff; }
+.wz-ctaband-section--media .wz-btn--ghost { color: #fff; border-color: rgba(255, 255, 255, 0.55); }
+
+@media (max-width: 640px) {
+  .wz-ctaband-section--media { background-attachment: scroll; }
+}
+
+/* ---------- Full-bleed video text section ---------- */
+.wz-videosection {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--space-section);
+  isolation: isolate;
+}
+.wz-videosection__media { position: absolute; inset: 0; z-index: 0; }
+.wz-videosection__media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wz-videosection__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ink) 48%, transparent) 0%,
+    color-mix(in oklab, var(--ink) 68%, transparent) 100%
+  );
+}
+.wz-videosection .wz-container { position: relative; z-index: 2; }
+.wz-videosection__content { max-width: 62ch; }
+.wz-videosection__content .wz-eyebrow { color: #a9eec2; }
+.wz-videosection__content h2 {
+  color: #fff;
+  font-size: var(--step-3);
+  margin: 0.7rem 0 1.2rem;
+  max-width: 20ch;
+}
+.wz-videosection__content p {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: var(--step-1);
+  max-width: 58ch;
+}
+.wz-videosection__content--right {
+  margin-left: auto;
+  text-align: right;
+}
+.wz-videosection__content--right h2,
+.wz-videosection__content--right p {
+  margin-left: auto;
+}
+
+
+/* Selector nested inside a video section (Application): one continuous
+   background, light-on-dark list. */
+.wz-videosection__extra { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.wz-videosection__extra .wz-sectorselect__list { border-top-color: rgba(255, 255, 255, 0.25); }
+.wz-videosection__extra .wz-sectorselect__item { border-bottom-color: rgba(255, 255, 255, 0.25); }
+.wz-videosection__extra .wz-sectorselect__num { color: rgba(255, 255, 255, 0.6); }
+.wz-videosection__extra .wz-sectorselect__label { color: #fff; }
+.wz-videosection__extra .wz-sectorselect__item[aria-selected="true"] .wz-sectorselect__num { color: #a9eec2; }
+.wz-videosection__extra .wz-tagline { color: #fff; }

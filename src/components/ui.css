@@ -1,0 +1,16 @@
+/* Whizzo shared component library — themed entirely through the
+   brand tokens defined in globals.css. No per-brand rules here.
+
+   Split into src/components/styles/ so each concern is easy to find.
+   Import order matches the original single-file order exactly — do
+   not reorder these without checking for selector-specificity ties
+   across files, since CSS cascade still depends on import order. */
+
+@import "./styles/chrome.css";
+@import "./styles/hero-and-homepage-features.css";
+@import "./styles/interactive-modules.css";
+@import "./styles/grids-and-trust.css";
+@import "./styles/content-blocks.css";
+@import "./styles/cta-and-video.css";
+@import "./styles/forms-and-mobile-nav.css";
+@import "./styles/wow-problem-list.css";

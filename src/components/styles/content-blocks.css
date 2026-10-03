@@ -1,0 +1,162 @@
+/* This file: generic content-block primitives — section headers,
+   the announcement bar, compact page hero, prose, spec lists, feature
+   grid, and the pinned "journey" scrollytelling layout. */
+
+/* ---------- Section header ---------- */
+.wz-sectionhead { max-width: 70ch; margin: 0 auto 2.5rem; display: grid; gap: 0.8rem; text-align: center; justify-items: center; }
+.wz-sectionhead h2 { font-size: var(--step-2); }
+.wz-sectionhead p { color: var(--muted); }
+
+/* ---------- Announcement bar ---------- */
+.wz-announce { background: var(--accent); color: var(--accent-fg); font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); letter-spacing: 0.02em; }
+.wz-announce > .wz-container { padding-block: 0.55rem; text-align: center; }
+
+/* ---------- Compact page hero ---------- */
+.wz-pagehero { padding-block: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 3.5rem); border-bottom: 1px solid var(--line); }
+.wz-pagehero h1 { font-size: var(--step-4); max-width: 18ch; margin-top: 0.8rem; }
+.wz-pagehero__intro { margin-top: 1.2rem; max-width: 56ch; font-size: var(--step-1); color: var(--muted); }
+
+/* ---------- Prose ---------- */
+.wz-prose { max-width: 68ch; display: grid; gap: 1.2rem; }
+.wz-prose h2 { font-size: var(--step-2); margin-top: 1.5rem; }
+.wz-prose h3 { font-size: var(--step-1); margin-top: 1rem; }
+.wz-prose p, .wz-prose li { color: color-mix(in oklab, var(--fg) 85%, transparent); }
+.wz-prose ul { padding-left: 1.2rem; display: grid; gap: 0.5rem; }
+.wz-prose a { color: var(--accent); }
+
+/* ---------- Spec list ---------- */
+.wz-specs { display: grid; gap: 0; border-top: 1px solid var(--line); max-width: 60ch; }
+.wz-specs__row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+.wz-specs__row dt { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 0; }
+.wz-specs__row dd { margin: 0; }
+
+/* ---------- Feature grid ---------- */
+.wz-features { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+
+/* ---------- Journey pin (centred sticky illustration, alternating steps) ----------
+   The illustration pins in the centre column while the four steps
+   scroll past in the side columns, alternating right / left / right /
+   left. A decisive spotlight lands on whichever step is centred in the
+   viewport (via IntersectionObserver with a shrunk root); the rest sit
+   dimmed. Each step gets real scroll runway so the pin has somewhere
+   to go. */
+.wz-journeypin--split {
+  --wz-journey-step-h: 60vh;
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 380px) 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.wz-journeypin__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wz-journey-step-h);
+}
+.wz-journeypin__col--left { align-items: flex-end; padding-top: var(--wz-journey-step-h); }
+.wz-journeypin__col--right { align-items: flex-start; }
+
+.wz-journeypin__media {
+  position: sticky;
+  top: calc(var(--header-h) + 2rem);
+}
+.wz-journeypin__media-frame { border-radius: var(--radius); overflow: hidden; }
+.wz-journeypin__media-frame img { width: 100%; height: auto; display: block; }
+
+.wz-journeypin__step {
+  min-height: var(--wz-journey-step-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 40ch;
+  opacity: 0.3;
+  transform: translateY(0.5rem) scale(0.98);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.wz-journeypin__col--left .wz-journeypin__step { text-align: right; }
+.wz-journeypin__step.is-active { opacity: 1; transform: none; }
+
+.wz-journeypin__num {
+  display: block;
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: var(--step--1);
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.wz-journeypin__step h3 { font-size: var(--step-2); margin: 0 0 0.7rem; }
+.wz-journeypin__step p { color: var(--muted); font-size: var(--step-0); }
+
+@media (max-width: 900px) {
+  .wz-journeypin--split { grid-template-columns: 1fr; }
+  .wz-journeypin__col { display: contents; }
+  .wz-journeypin__media { position: static; order: -1; margin-bottom: 1rem; }
+  .wz-journeypin__step {
+    min-height: 0 !important;
+    opacity: 1;
+    transform: none;
+    max-width: none;
+    text-align: left !important;
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wz-journeypin__step { transition: none; opacity: 1; transform: none; }
+}
+
+/* Short dot-separated closing line used after a process/list section
+   (e.g. "Recover. Transform. Reconnect. Repeat."). */
+.wz-tagline {
+  margin: 2.2rem 0 0;
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.wz-tagline--center { text-align: center; }
+.wz-feature { background: var(--bg); padding: 1.6rem; }
+.wz-feature h3 { font-size: var(--step-1); margin-bottom: 0.5rem; }
+.wz-feature p { color: var(--muted); font-size: var(--step--1); }
+
+
+/* ---------- Split (text + image) ---------- */
+.wz-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; }
+.wz-split__media { aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.wz-split__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wz-split .wz-specs { max-width: none; }
+@media (max-width: 780px) { .wz-split { grid-template-columns: 1fr; } }
+
+/* ---------- Data table ---------- */
+.wz-tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.wz-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); min-width: 640px; }
+.wz-table th, .wz-table td { text-align: left; padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.wz-table tbody tr:last-child > * { border-bottom: 0; }
+.wz-table thead th { font-family: var(--font-heading), ui-monospace, monospace; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: var(--surface); font-weight: 500; }
+.wz-table tbody th { font-weight: 600; }
+.wz-table td { color: color-mix(in oklab, var(--fg) 85%, transparent); }
+
+/* ---------- FAQ ---------- */
+.wz-faq { max-width: 78ch; border-top: 1px solid var(--line); }
+.wz-faq__item { border-bottom: 1px solid var(--line); padding: 1rem 0; }
+.wz-faq__item summary { cursor: pointer; font-weight: 600; font-size: var(--step-0); list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+.wz-faq__item summary::-webkit-details-marker { display: none; }
+.wz-faq__item summary::after { content: "+"; color: var(--accent); font-size: 1.3em; line-height: 1; }
+.wz-faq__item[open] summary::after { content: "–"; }
+.wz-faq__item p { margin-top: 0.7rem; color: var(--muted); }
+
+/* ---------- Titled list columns ---------- */
+.wz-listcols { display: grid; gap: clamp(1.5rem, 3vw, 3rem); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.wz-listcol h3 { font-size: var(--step-1); margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+.wz-listcol ul { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+.wz-listcol li { position: relative; padding-left: 1.3rem; color: color-mix(in oklab, var(--fg) 85%, transparent); }
+.wz-listcol li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent); }
+
+/* ---------- Buyer profile ---------- */
+.wz-profile { display: grid; gap: 1.4rem; padding: clamp(1.4rem, 3vw, 2.2rem); background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); }
+.wz-profile header h3 { font-size: var(--step-2); margin-bottom: 0.4rem; }
+.wz-profile header p { color: var(--muted); max-width: 62ch; }
+.wz-profile__cols { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.wz-profile__cols h4 { font-family: var(--font-heading), ui-monospace, monospace; font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 0.6rem; font-weight: 500; }
+.wz-profile__cols ul { list-style: none; padding: 0; display: grid; gap: 0.4rem; }
+.wz-profile__cols li, .wz-profile__cols p { color: color-mix(in oklab, var(--fg) 85%, transparent); }

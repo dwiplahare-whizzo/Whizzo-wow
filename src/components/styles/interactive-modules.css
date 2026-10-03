@@ -1,0 +1,249 @@
+/* This file: interactive, JS-driven modules — the presence globe,
+   material/product cards, the numbered process diagram, the
+   accordion, and the WhizzoWow sector selector. */
+
+/* ---------- Global presence globe ---------- */
+/* A deliberate dark "moment" section — globes read better against near-black
+   regardless of the page's own light theme, same reasoning as the video
+   hero's scrim. Full-bleed (rendered outside Container). */
+.wz-globesection {
+  background: var(--ink);
+  color: #fff;
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+  overflow: hidden;
+}
+.wz-globesection__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+.wz-globesection .wz-eyebrow { color: #e8a68f; }
+.wz-globesection__grid h2 { font-size: var(--step-2); max-width: 20ch; color: #fff; }
+.wz-globesection__grid p { color: rgba(255, 255, 255, 0.66); margin-top: 1rem; max-width: 42ch; }
+.wz-globesection__legend { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+.wz-globesection__legend span {
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: var(--step--1);
+  color: rgba(255, 255, 255, 0.55);
+  position: relative;
+  padding-left: 1rem;
+}
+.wz-globesection__legend span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d8563b;
+}
+
+.wz-globe { position: relative; width: 100%; max-width: 560px; aspect-ratio: 1; margin-inline: auto; }
+.wz-globe__canvas { width: 100%; height: 100%; cursor: grab; opacity: 0; transition: opacity 1s ease; contain: layout paint size; touch-action: none; }
+.wz-globe__label {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  background: rgba(20, 17, 15, 0.92);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius);
+  pointer-events: none;
+  animation: wz-globe-label-in 0.18s ease both;
+}
+.wz-globe__label::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(20, 17, 15, 0.92);
+}
+.wz-globe__label--hq { border-color: #d8563b; color: #f3b7a4; }
+@keyframes wz-globe-label-in {
+  from { opacity: 0; transform: translate(-50%, calc(-100% - 8px)); }
+  to { opacity: 1; transform: translate(-50%, calc(-100% - 14px)); }
+}
+
+@media (max-width: 860px) {
+  .wz-globesection__grid { grid-template-columns: 1fr; text-align: center; }
+  .wz-globesection__grid p { margin-inline: auto; }
+  .wz-globesection__legend { justify-content: center; }
+  .wz-globe { max-width: 420px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wz-globe__label { animation: none; }
+}
+
+/* ---------- Material platform card ---------- */
+.wz-cards { display: grid; gap: var(--grid-gutter); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.wz-card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; text-decoration: none; transition: transform 0.2s ease, border-color 0.2s ease; }
+.wz-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.wz-card__media { aspect-ratio: 4 / 3; background: color-mix(in oklab, var(--accent) 12%, var(--surface)); }
+.wz-card__media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Product photo gallery (materials-science vertical pages) ---------- */
+.wz-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--grid-gutter); }
+.wz-gallery__tile { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.wz-gallery__tile--lead { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+.wz-gallery__tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 780px) {
+  .wz-gallery { grid-template-columns: repeat(2, 1fr); }
+  .wz-gallery__tile--lead { grid-column: span 2; grid-row: span 1; aspect-ratio: 16 / 10; }
+}
+.wz-card__body { padding: 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+.wz-card__name { font-family: var(--heading-font); font-size: var(--step-1); }
+.wz-card__promise { color: var(--muted); font-size: var(--step--1); flex: 1; }
+.wz-card__bestfor { font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 0.6rem; margin-top: 0.2rem; }
+.wz-card__link { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+
+/* ---------- Numbered process diagram ---------- */
+.wz-process { display: grid; gap: var(--grid-gutter); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); counter-reset: step; }
+.wz-process__step { position: relative; padding-top: 2.5rem; border-top: 2px solid var(--line); }
+.wz-process__step::before { counter-increment: step; content: counter(step, decimal-leading-zero); position: absolute; top: -0.1rem; left: 0; font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; color: var(--accent); font-size: var(--step-1); }
+.wz-process__step h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }
+.wz-process__step p { color: var(--muted); font-size: var(--step--1); }
+
+/* ---------- Sector selector (interactive, replaces accordion on the
+   WhizzoWow homepage Application section) ----------
+   A list with a moving accent indicator on the left, an animated detail
+   panel on the right. Hover or click/focus to switch. */
+.wz-sectorselect {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.wz-sectorselect__list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.wz-sectorselect__indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  background: var(--accent);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.wz-sectorselect__item {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 1.1rem 0 1.1rem 1.2rem;
+  cursor: pointer;
+  font: inherit;
+  color: var(--muted);
+}
+.wz-sectorselect__num {
+  flex: none;
+  width: 2.2ch;
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: var(--step--1);
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+.wz-sectorselect__label {
+  font-family: var(--heading-font);
+  font-size: var(--step-1);
+  color: var(--fg);
+  opacity: 0.55;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.wz-sectorselect__item[aria-selected="true"] .wz-sectorselect__num { color: var(--accent); }
+.wz-sectorselect__item[aria-selected="true"] .wz-sectorselect__label {
+  opacity: 1;
+  transform: translateX(0.3rem);
+}
+
+.wz-sectorselect__panel {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 260px;
+  aspect-ratio: 16 / 10;
+}
+.wz-sectorselect__panel-inner {
+  position: absolute;
+  inset: 0;
+  animation: wz-panel-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Image (or numbered placeholder) fills the whole panel; text sits over
+   it on a bottom scrim rather than below it. */
+.wz-sectorselect__media {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--surface), var(--bg));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wz-sectorselect__media img,
+.wz-sectorselect__media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wz-sectorselect__num-big {
+  display: block;
+  font-family: var(--heading-font);
+  font-size: clamp(3rem, 8vw, 5rem);
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+.wz-sectorselect__scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    color-mix(in oklab, var(--ink) 78%, transparent) 100%
+  );
+}
+
+.wz-sectorselect__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: clamp(1.4rem, 4vw, 2.4rem);
+}
+.wz-sectorselect__text h3 { font-size: var(--step-2); margin: 0 0 0.5rem; color: #fff; }
+.wz-sectorselect__text p { color: rgba(255, 255, 255, 0.85); max-width: 44ch; margin: 0; }
+
+@keyframes wz-panel-in {
+  from { opacity: 0; transform: translateY(0.7rem); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 720px) {
+  .wz-sectorselect { grid-template-columns: 1fr; }
+  .wz-sectorselect__panel { min-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wz-sectorselect__indicator { transition: none; }
+  .wz-sectorselect__panel-inner { animation: none; }
+}
+

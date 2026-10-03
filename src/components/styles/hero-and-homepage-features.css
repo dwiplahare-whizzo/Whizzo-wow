@@ -1,0 +1,239 @@
+/* This file: the shared Hero (every brand) plus a run of large,
+   mostly Business-homepage-specific feature sections that happened to
+   be authored next to it — the pinned capability-journey timeline,
+   the floating image marquees, and the stat/impact band. */
+
+/* ---------- Hero ---------- */
+.wz-hero { position: relative; min-height: 82vh; display: flex; align-items: flex-end; overflow: hidden; }
+.wz-hero__media { position: absolute; inset: 0; z-index: 0; }
+.wz-hero__media img, .wz-hero__media video { width: 100%; height: 100%; object-fit: cover; }
+.wz-hero__scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, color-mix(in oklab, var(--bg) 20%, transparent) 0%, var(--bg) 96%); }
+.wz-hero__inner { position: relative; z-index: 2; padding-block: clamp(3rem, 8vw, 7rem); }
+.wz-hero h1 { font-size: var(--step-5); max-width: 16ch; }
+.wz-hero__sub { margin-top: 1.4rem; max-width: 48ch; font-size: var(--step-1); opacity: 0.85; }
+.wz-hero__cta { margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+/* Any hero with media (image or video) gets a slightly smaller headline
+   instead of the oversized default. */
+.wz-hero--media h1 {
+  font-weight: 700;
+  font-size: var(--step-4);
+  letter-spacing: -0.01em;
+}
+
+/* Video hero: the video plays through a graded, mostly-transparent scrim
+   (clear at top, just dark enough at the text baseline to guarantee
+   contrast) rather than fading to the page's own background color — the
+   footage stays visible instead of being washed out by the theme. Text
+   sits in light-on-dark regardless of the site's light theme, which is
+   the standard treatment for a media hero, and runs a bit smaller in a
+   premium display serif instead of the oversized default headline.
+   Neutral ink-based scrim (not brand-tinted) so it reads correctly over
+   any brand's footage; font-style keeps the italic from .wz-hero--media
+   unless a brand overrides it below. */
+.wz-hero--video .wz-hero__scrim {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ink) 10%, transparent) 0%,
+    color-mix(in oklab, var(--ink) 40%, transparent) 55%,
+    color-mix(in oklab, var(--ink) 82%, transparent) 100%
+  );
+}
+.wz-hero--video .wz-eyebrow { color: rgba(255, 255, 255, 0.85); }
+.wz-hero--video h1 {
+  font-family: var(--font-heading), "Times New Roman", serif;
+  font-weight: 700;
+  font-size: var(--step-3);
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+.wz-hero--video .wz-hero__sub { color: rgba(255, 255, 255, 0.82); opacity: 1; }
+.wz-hero--video .wz-btn--ghost { color: #fff; border-color: rgba(255, 255, 255, 0.5); }
+
+/* WhizzoWow's video hero predates the shared .wz-hero--media italic
+   treatment — keep its original look (upright, green-tinted eyebrow). */
+[data-brand="wow"] .wz-hero--video h1 { font-style: normal; }
+[data-brand="wow"] .wz-hero--video .wz-eyebrow { color: #a9eec2; }
+
+/* ---------- Capability journey (pinned, scroll-driven) ---------- */
+/* Background stays the page's own — no new tone — and heading typography
+   matches every other SectionHead on the page, just set slightly smaller
+   so it comfortably shares the 100vh pinned viewport with the timeline. */
+.wz-capjourney { position: relative; }
+.wz-capjourney__sticky {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.wz-capjourney__head { max-width: 62ch; margin-bottom: clamp(1.6rem, 3.2vw, 2.6rem); display: grid; gap: 0.7rem; }
+.wz-capjourney__head h2 { font-size: var(--step-2); }
+.wz-capjourney__head p { color: var(--muted); }
+
+.wz-capjourney__viewport { overflow: hidden; }
+.wz-capjourney__cards { display: grid; gap: var(--grid-gutter); }
+/* Tall, full-bleed editorial cards — the photo *is* the card. Height is
+   viewport-height-relative (not width-relative) so it always leaves room
+   for the heading + track above/below within the 100vh pinned viewport. */
+.wz-capjourney__slot { position: relative; min-height: min(54vh, 560px); }
+.wz-capjourney__card {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+.wz-capjourney__media {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--accent) 22%, var(--ink)) 0%,
+    color-mix(in oklab, var(--accent) 4%, var(--ink)) 100%
+  );
+}
+.wz-capjourney__media img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.wz-capjourney__watermark {
+  font-family: var(--font-heading), "Times New Roman", serif;
+  font-style: italic;
+  font-size: clamp(3.5rem, 9vw, 6.5rem);
+  line-height: 1;
+  color: color-mix(in oklab, white 20%, transparent);
+}
+/* Scrim: clear at the top so the photo reads, graded to a legible dark
+   base so the overlaid text never needs its own background panel. */
+.wz-capjourney__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    185deg,
+    transparent 40%,
+    rgba(6, 10, 8, 0.32) 68%,
+    rgba(4, 7, 6, 0.82) 100%
+  );
+  pointer-events: none;
+}
+.wz-capjourney__info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: clamp(1.1rem, 2.6vw, 1.75rem);
+  display: grid;
+  gap: 0.4rem;
+}
+.wz-capjourney__num { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.75); }
+.wz-capjourney__card h3 { font-size: var(--step-1); color: #fff; }
+.wz-capjourney__card p { color: rgba(255, 255, 255, 0.8); font-size: var(--step--1); max-width: 34ch; }
+
+.wz-capjourney__track { position: relative; display: grid; margin-top: clamp(1.4rem, 3vw, 2.2rem); height: 2.4rem; }
+.wz-capjourney__line { position: absolute; left: 0; right: 0; top: 50%; height: 2px; transform: translateY(-50%); background: var(--line); }
+.wz-capjourney__linefill { position: absolute; left: 0; top: 50%; height: 2px; transform: translateY(-50%); background: var(--accent); }
+.wz-capjourney__dotcol { display: flex; align-items: center; justify-content: center; }
+.wz-capjourney__dot {
+  position: relative;
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  transition: background 0.5s ease, border-color 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+}
+.wz-capjourney__dot.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.4);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 16%, transparent);
+}
+
+/* Mobile / reduced-motion: vertical, non-pinned variant */
+.wz-capjourney-m__track { position: relative; display: grid; gap: 2.75rem; padding-left: 3rem; }
+.wz-capjourney-m__line { position: absolute; left: 1.15rem; top: 0.2rem; bottom: 0.2rem; width: 2px; background: var(--line); }
+.wz-capjourney-m__linefill { position: absolute; left: 0; top: 0; width: 100%; height: 0%; background: var(--accent); }
+.wz-capjourney-m__row { position: relative; }
+.wz-capjourney-m__row .wz-capjourney__dot { position: absolute; left: -2.28rem; top: 0.05rem; }
+.wz-capjourney-m__row .wz-capjourney__card {
+  position: relative;
+  inset: auto;
+  aspect-ratio: 3 / 4;
+  opacity: 0;
+  transform: translateY(1.75rem);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.wz-capjourney-m__row .wz-capjourney__card.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wz-capjourney-m__row .wz-capjourney__card { opacity: 1; transform: none; transition: none; }
+  .wz-capjourney__dot { transition: none; }
+}
+
+@media (max-width: 640px) {
+  .wz-capjourney-m__track { padding-left: 2.4rem; gap: 2.25rem; }
+  .wz-capjourney-m__line { left: 0.85rem; }
+  .wz-capjourney-m__row .wz-capjourney__dot { left: -1.98rem; }
+}
+
+/* ---------- Floating image marquees ---------- */
+/* Two ambient, infinitely-scrolling rows of imagery — pure CSS motion (no
+   scroll listeners), full-bleed (rendered outside Container so it runs
+   edge to edge), each row's track duplicated so the loop is seamless. */
+.wz-marquees { display: grid; gap: clamp(1.4rem, 3.4vw, 2.25rem); margin-top: clamp(2.5rem, 6vw, 4rem); }
+.wz-marquee {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.wz-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.6vw, 1.75rem);
+  width: max-content;
+  padding-block: 0.75rem;
+  animation: wz-marquee-ltr linear infinite;
+}
+.wz-marquee__track--rtl { animation-name: wz-marquee-rtl; }
+.wz-marquee:hover .wz-marquee__track { animation-play-state: paused; }
+.wz-marquee__tile {
+  flex: 0 0 auto;
+  width: clamp(190px, 19vw, 300px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 22px 44px -22px color-mix(in oklab, var(--ink) 45%, transparent);
+}
+/* Slight vertical stagger reads as the images gently floating, not a rigid grid. */
+.wz-marquee__tile:nth-child(even) { transform: translateY(1.4rem); }
+.wz-marquee__tile:nth-child(3n) { transform: translateY(-0.9rem); }
+.wz-marquee__tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+@keyframes wz-marquee-ltr {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes wz-marquee-rtl {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wz-marquee__track { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .wz-marquee__tile { width: clamp(140px, 42vw, 200px); }
+}
+
+/* ---------- Stat / impact band ---------- */
+.wz-stats { background: var(--surface); }
+.wz-stats__grid { display: grid; gap: var(--grid-gutter); grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.wz-stat__value { font-family: var(--heading-font); font-size: var(--step-4); color: var(--accent); line-height: 1; }
+.wz-stat__label { margin-top: 0.6rem; color: var(--muted); font-size: var(--step--1); }
+

@@ -1,0 +1,93 @@
+/* Whizzo shared component library — themed entirely through the
+   brand tokens defined in globals.css. No per-brand rules here.
+
+   This file: site chrome — buttons, header/nav, the cross-brand
+   switcher, footer. The bits every page shares regardless of content. */
+
+/* ---------- Button ---------- */
+.wz-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font: inherit;
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  padding: 0.75rem 1.9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.wz-btn:hover { transform: translateY(-2px); }
+.wz-btn--primary { background: var(--accent); color: var(--accent-fg); }
+.wz-btn--ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+
+/* ---------- Header / nav ---------- */
+.wz-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--header-bg);
+  color: #fff;
+}
+.wz-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.9rem;
+}
+.wz-logo { font-family: var(--heading-font); font-size: var(--step-1); font-weight: 700; text-decoration: none; flex-shrink: 0; color: #fff; }
+.wz-nav {
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-end;
+}
+.wz-nav a {
+  text-decoration: none;
+  font-family: var(--font-heading), Roboto, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+}
+.wz-nav a:hover { color: #7fe0a8; }
+.wz-nav__group { position: relative; }
+.wz-header__actions { display: flex; gap: 0.6rem; align-items: center; flex-shrink: 0; }
+.wz-nav__panel {
+  position: absolute;
+  top: 140%;
+  left: 0;
+  min-width: 220px;
+  background: var(--header-bg);
+  border-radius: var(--radius);
+  padding: 0.6rem;
+  display: grid;
+  gap: 0.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.wz-nav__group:hover .wz-nav__panel,
+.wz-nav__group:focus-within .wz-nav__panel { opacity: 1; pointer-events: auto; }
+.wz-nav__panel a { padding: 0.5rem 0.6rem; border-radius: var(--radius); }
+.wz-nav__panel a { text-transform: none; font-size: 0.85rem; }
+.wz-nav__panel a:hover { background: color-mix(in oklab, var(--accent) 35%, transparent); }
+
+/* ---------- Footer ---------- */
+.wz-footer { background: var(--header-bg); color: rgba(255, 255, 255, 0.85); }
+.wz-footer__grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); padding-block: 3rem; }
+.wz-footer h4 { font-family: var(--font-heading), Roboto, sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; margin-bottom: 0.8rem; }
+.wz-footer a { display: block; text-decoration: none; opacity: 0.8; padding-block: 0.2rem; font-size: var(--step--1); }
+.wz-footer a:hover { opacity: 1; color: #7fe0a8; }
+.wz-footer__bottom { border-top: 1px solid rgba(255, 255, 255, 0.15); padding-block: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); }
+

@@ -1,0 +1,43 @@
+/* This file: the contact form, the skip-to-content link, the mobile
+   menu, and the responsive header breakpoint that toggles it. */
+
+/* ---------- Form (contact) ---------- */
+.wz-form { display: grid; gap: 1.4rem; max-width: 640px; }
+.wz-form__row { display: grid; gap: 0.4rem; }
+.wz-form__row label { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.wz-form input, .wz-form select, .wz-form textarea {
+  font: inherit; background: var(--surface); color: var(--fg);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 0.8rem 0.9rem;
+}
+.wz-form input:focus, .wz-form select:focus, .wz-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.wz-form__two { display: grid; gap: 1.4rem; grid-template-columns: 1fr 1fr; }
+.wz-form__status { padding: 1rem; border-radius: var(--radius); border: 1px solid var(--accent); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+@media (max-width: 640px) { .wz-form__two { grid-template-columns: 1fr; } }
+
+/* ---------- Skip link ---------- */
+.wz-skip { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--accent); color: var(--accent-fg); padding: 0.7rem 1rem; border-radius: var(--radius); font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); }
+.wz-skip:focus { left: 1rem; top: 1rem; }
+
+/* ---------- Mobile menu ---------- */
+.wz-mobilemenu { display: none; }
+.wz-mobilemenu__toggle { font: inherit; font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: var(--radius); padding: 0.5rem 0.8rem; cursor: pointer; }
+.wz-mobilemenu__panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--header-bg); color: #fff; padding: 1rem var(--grid-gutter); display: grid; gap: 0.8rem; }
+.wz-mobilemenu__panel a { display: block; text-decoration: none; padding: 0.35rem 0; font-size: var(--step-0); }
+.wz-mobilemenu__panel a.wz-mobilemenu__sub { padding-left: 1rem; font-size: var(--step--1); opacity: 0.8; }
+
+/* ---------- Responsive header ----------
+   One breakpoint, shared by every brand: above it the full nav shows on a
+   single line (it no longer wraps); below it the nav is replaced by the
+   mobile menu. Because the brand switcher is now a fixed-width trigger
+   (not a 3-way tab bar), the three sites collapse at the same point
+   regardless of how many nav items or how long the labels are. */
+@media (max-width: 1300px) {
+  .wz-nav { display: none; }
+  .wz-mobilemenu { display: block; }
+}
+
+@media (max-width: 480px) {
+  .wz-header__row { gap: 0.6rem; }
+  .wz-logo { font-size: var(--step-0); }
+}
+

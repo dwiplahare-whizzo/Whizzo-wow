@@ -1,0 +1,138 @@
+/* This file: static grid/wall layouts — logo wall, trust bar,
+   leadership portraits, project tiles, the industry bento grid. */
+
+/* ---------- Logo / trust wall ---------- */
+.wz-logowall { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.wz-logowall__cell { background: var(--bg); display: grid; place-items: center; padding: 2rem 1rem; font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); letter-spacing: 0.04em; color: var(--muted); }
+
+/* ---------- Trust bar (Backed by / Press / Certifications, unified) ---------- */
+.wz-trustbar { display: flex; flex-wrap: wrap; margin-top: 2.75rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+.wz-trustbar__group { position: relative; flex: 1 1 260px; padding-inline: 2.25rem; }
+.wz-trustbar__group:first-child { padding-left: 0; }
+.wz-trustbar__divider { position: absolute; left: 0; top: 0.15rem; bottom: 0.15rem; width: 1px; background: var(--line); }
+.wz-trustbar__label {
+  display: block;
+  font-family: var(--font-heading), ui-monospace, "SF Mono", monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+.wz-trustbar__list { margin: 0; line-height: 1.7; }
+.wz-trustbar__list--lead { font-family: var(--heading-font); font-size: var(--step-1); color: var(--fg); }
+.wz-trustbar__list--muted { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: var(--step--1); color: var(--muted); }
+.wz-trustbar__sep { color: var(--line); }
+
+@media (max-width: 760px) {
+  .wz-trustbar { flex-direction: column; gap: 1.75rem; }
+  .wz-trustbar__group { padding-inline: 0; padding-top: 1.75rem; }
+  .wz-trustbar__group:first-child { padding-top: 0; }
+  .wz-trustbar__divider { left: 0; right: 0; top: 0; bottom: auto; width: auto; height: 1px; }
+  .wz-trustbar__group:first-child .wz-trustbar__divider { display: none; }
+}
+
+/* ---------- Leadership / portrait card ---------- */
+.wz-people { display: grid; gap: var(--grid-gutter); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.wz-person__photo { aspect-ratio: 3 / 4; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
+.wz-person__photo img { width: 100%; height: 100%; object-fit: cover; }
+.wz-person__name { margin-top: 0.9rem; font-family: var(--heading-font); font-size: var(--step-1); }
+.wz-person__role { color: var(--muted); font-size: var(--step--1); }
+
+/* ---------- Project grid tile ---------- */
+.wz-projects { display: grid; gap: var(--grid-gutter); grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.wz-project { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; text-decoration: none; border: 1px solid var(--line); }
+.wz-project img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.wz-project__overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.4rem; background: linear-gradient(180deg, transparent 30%, color-mix(in oklab, var(--bg) 92%, transparent)); }
+.wz-project__tag { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.wz-project__title { font-family: var(--heading-font); font-size: var(--step-1); }
+
+/* ---------- Industry bento grid ---------- */
+/* Two feature tiles (Fashion 2x2, Automotive 2x1) plus six 1x1 tiles, all
+   full-bleed real photography instead of flat text boxes. grid-auto-flow:
+   dense packs the small tiles into whatever gaps the features leave. */
+.wz-bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: clamp(150px, 15vw, 230px);
+  grid-auto-flow: dense;
+  gap: var(--grid-gutter);
+}
+.wz-bento__tile {
+  position: relative;
+  grid-column: span 1;
+  grid-row: span 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  box-shadow: 0 0 0 1px var(--line);
+  transition: box-shadow 0.35s ease;
+}
+.wz-bento__tile--lg { grid-column: span 2; grid-row: span 2; }
+.wz-bento__tile--md { grid-column: span 2; grid-row: span 1; }
+.wz-bento__tile:hover { box-shadow: 0 0 0 1px var(--accent), 0 24px 48px -24px color-mix(in oklab, var(--ink) 55%, transparent); }
+.wz-bento__tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.wz-bento__tile:hover img { transform: scale(1.06); }
+.wz-bento__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    195deg,
+    transparent 45%,
+    color-mix(in oklab, var(--ink) 78%, transparent) 100%
+  );
+  transition: opacity 0.35s ease;
+}
+.wz-bento__index {
+  position: absolute;
+  top: 0.9rem;
+  left: 1rem;
+  font-family: var(--font-heading), "Times New Roman", serif;
+  font-style: italic;
+  font-size: var(--step-1);
+  color: rgba(255, 255, 255, 0.55);
+}
+.wz-bento__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.1rem 1.2rem; display: grid; gap: 0.3rem; }
+.wz-bento__tag { font-family: var(--font-heading), ui-monospace, "SF Mono", monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.7); }
+.wz-bento__title { font-family: var(--heading-font); font-size: var(--step-0); color: #fff; transition: transform 0.35s ease; }
+.wz-bento__tile:hover .wz-bento__title { transform: translateY(-2px); }
+.wz-bento__blurb { display: none; }
+.wz-bento__tile--lg .wz-bento__title,
+.wz-bento__tile--md .wz-bento__title { font-size: var(--step-1); }
+.wz-bento__tile--lg .wz-bento__index { font-size: var(--step-2); }
+.wz-bento__tile--lg .wz-bento__blurb,
+.wz-bento__tile--md .wz-bento__blurb {
+  display: block;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: var(--step--1);
+  max-width: 34ch;
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 860px) {
+  .wz-bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(160px, 32vw, 240px); }
+  .wz-bento__tile--lg { grid-column: span 2; grid-row: span 2; }
+  .wz-bento__tile--md { grid-column: span 2; grid-row: span 1; }
+}
+
+@media (max-width: 520px) {
+  .wz-bento { grid-template-columns: 1fr; grid-auto-rows: 260px; }
+  .wz-bento__tile,
+  .wz-bento__tile--lg,
+  .wz-bento__tile--md { grid-column: span 1; grid-row: span 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wz-bento__tile img,
+  .wz-bento__title { transition: none; }
+  .wz-bento__tile:hover img { transform: none; }
+}
+
